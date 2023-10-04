@@ -1,0 +1,79 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: Staff-Management
+  description: Staff-attendance-activity
+basePath: /api/v1
+paths:
+  /spec:
+    get:
+      tags:
+        - Specification
+      responses:
+        200:
+          description: Return the API specification
+  /auth/login:
+    post:
+      tags:
+        - Authorization
+      summary: Returns Authorization Token
+      description: >-
+        Authorizes default users with username and password set as root to use
+        the endpoints
+      responses:
+        "200":
+          description: Authorization token
+          examples:
+            application/json:
+              data: token
+          schema:
+            type: object
+      parameters:
+        - required: true
+          name: email
+          in: formData
+          type: string
+        - required: true
+          name: password
+          in: formData
+          type: string
+      produces:
+        - application/json
+      consumes:
+        - multipart/form-data
+  /auth/signup:
+    post:
+      tags:
+        - Authorization
+      summary: Register user data
+      description: >-
+        Register
+      responses:
+        "201":
+          description: Registerd successfully
+          examples:
+            application/json:
+              data: data
+          schema:
+            type: object
+      parameters:
+        - required: true
+          name: firstName
+          in: formData
+          type: string
+        - required: true
+          name: lastName
+          in: formData
+          type: string
+        - required: true
+          name: email
+          in: formData
+          type: string
+        - required: true
+          name: password
+          in: formData
+          type: string
+      produces:
+        - application/json
+      consumes:
+        - multipart/form-data

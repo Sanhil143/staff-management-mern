@@ -1,4 +1,7 @@
 const router = require('express')()
+const {updateUser} = require('../user/controller')
+
+router.patch('/updateUser',updateUser);
 
 
-router.patch('/updateUser')
+module.exports = router;

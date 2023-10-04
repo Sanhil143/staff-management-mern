@@ -1,12 +1,14 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const path = require("path");
+const os = require('os');
 const bodyParser = require("body-parser");
 const http = require("http");
 const cors = require("cors");
 const logger = require('../common/logger');
 const swagger = require("../common/swagger");
 const dbConnection = require("./dbConnection");
+require('colors');
 
 const app = express();
 
@@ -36,7 +38,7 @@ const startExpressServer = (routes, port = process.env.PORT) => {
     logger.info(
       `up and running in ${
         process.env.NODE_ENV || "development"
-      } @: ${os.hostname()} on port: ${p}}`.bgBlack.blue.bold
+      } @: ${os.hostname()} on port: ${p}}`
     );
 
   swagger(app, routes)
