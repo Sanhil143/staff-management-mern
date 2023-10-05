@@ -12,6 +12,24 @@ paths:
       responses:
         200:
           description: Return the API specification
+  /organisation/addOrganisation:
+    post:
+      tags:
+        - Organisation
+      summary: add organisation
+      description: >-
+        add new organisation
+      responses:
+        "201":
+      parameters:
+        - required: true
+          name: organisationName
+          in: formData
+          type: string
+      produces:
+        - application/json
+      consumes:
+        - multipart/form-data
   /auth/login:
     post:
       tags:

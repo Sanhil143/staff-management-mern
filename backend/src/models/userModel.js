@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const objectId = mongoose.Schema.Types.ObjectId;
 
 const userSchema = new mongoose.Schema({
   firstName: {
@@ -13,8 +14,9 @@ const userSchema = new mongoose.Schema({
       type:String,
       required:true
   },
-  organisation:{
-      type:String,
+  organisationId:{
+      type:objectId,
+      ref:'organisation',
       required:true
   },
   employeeCode:{
@@ -24,7 +26,6 @@ const userSchema = new mongoose.Schema({
   role:{
       type:String,
       enum:['Admin','Employee'],
-      default:'Admin',
       required:true
   },
   email: {
@@ -37,8 +38,15 @@ const userSchema = new mongoose.Schema({
     unique: true,
     required:true
   },
-  profilePic:{
+  password:{
+    type:String,
+    default:null
+  },
+  profileUrl:{
       type:String
+  },
+  address:{
+    type:String
   },
   isDeleted:{
       type:Boolean,

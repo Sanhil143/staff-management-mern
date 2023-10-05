@@ -34,7 +34,7 @@ const swagger = (app, routes) => {
           },
         })
       );
-      app.use(mw.CORS(), mw.validateRequest());
+      // app.use(mw.CORS(), mw.validateRequest());
 
       routes(app);
       // app.use(errorHandler);
