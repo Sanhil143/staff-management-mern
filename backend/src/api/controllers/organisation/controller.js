@@ -12,10 +12,26 @@ const addOrganisation = async (req, res) => {
       organisationName: organisationName,
     });
     if (verifyorganisation) {
-      return res.status(400).send({ status: false, error: "already exist" });
+      return res
+        .status(400)
+        .send({ status: false, error: "organisation already exist" });
     }
-    // const lastOrganisation = await organisationModel.findOne({ organisationName }).sort({ employeeCode: -1 })
-    req.body.organisationCode = `${organisationName}001`;
+    const lastOrganisation = await organisationModel
+      .findOne({ isDelete:false })
+      .sort({ organisationCode: -1 });
+    let nextOrganisationCode = "";
+    if (lastEmployee) {
+      const lastCode = lastOrganisation.organisationCode;
+      const lastNumber = parseInt(lastCode.slice(-3));
+      nextOrganisationCode = `${verifyorganisation.organisationName}-${(
+        lastNumber + 1
+      )
+        .toString()
+        .padStart(3, "0")}`;
+    } else {
+      nextOrganisationCode = `${verifyorganisation.organisationName}-ADM001`;
+    }
+    req.body.organisationCode = nextOrganisationCode;
 
     const savedData = await organisationModel.create(req.body);
     return res.status(201).send({
@@ -28,4 +44,26 @@ const addOrganisation = async (req, res) => {
   }
 };
 
-module.exports = { addOrganisation };
+const allOrganisations = async (req, res) => {
+  try {
+    const allOrganisation = await organisationModel
+      .find({ isDelete: false, isActive: true })
+      .sort({ createdAt: -1 });
+    if (!allOrganisation) {
+      return res
+        .status(404)
+        .send({ status: false, error: "resource not found" });
+    }
+    return res
+      .status(200)
+      .send({
+        status: true,
+        message: "organisations",
+        Organisations: allOrganisation,
+      });
+  } catch (error) {
+    return res.status(500).send({ status: false, error: error.message });
+  }
+};
+
+module.exports = { addOrganisation, allOrganisations };

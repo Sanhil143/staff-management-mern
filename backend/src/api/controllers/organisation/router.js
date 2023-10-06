@@ -1,7 +1,8 @@
 const router = require('express')();
-const { addOrganisation } = require('./controller');
+const { addOrganisation, allOrganisations } = require('./controller');
 
-router.post('/addOrganisation',addOrganisation)
+router.post('/addOrganisation',addOrganisation);
+router.get('/allOrganisations',allOrganisations);
 
 
 module.exports = router;

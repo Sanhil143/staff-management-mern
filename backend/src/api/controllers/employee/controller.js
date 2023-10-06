@@ -1,9 +1,9 @@
 const userModel = require('../../../models/userModel');
 
 
-const createEmployee = async(req,res) => {
+const addEmployee = async(req,res) => {
       try {
-            const {firstName,lastName,designation,organisation,email,mobile} = req.body;
+            const {firstName,lastName,designation,organisationId,email,mobile} = req.body;
             if(!firstName){
                   return res.status(400).send({status:false,error:'first name is required'})
             }
@@ -13,8 +13,8 @@ const createEmployee = async(req,res) => {
             if(!designation){
                   return res.status(400).send({status:false,error:'designation is required'})
             }
-            if(!organisation){
-                  return res.status(400).send({status:false,error:'organisation is required'})
+            if(!organisationId){
+                  return res.status(400).send({status:false,error:'organisationId is required'})
             }
             if(!email){
                   return res.status(400).send({status:false,error:'email is required'})
@@ -30,10 +30,11 @@ const createEmployee = async(req,res) => {
             if(verifyMobile){
                   return res.status(400).send({status:false,error:'mobile no. is already exist'})
             }
-            
+            const savedData = await userModel.create(req.body);
+            return res.status(201).send({status:true,message:'employee added successfully', data:savedData});       
       } catch (error) {
             return res.status(500).send({status:false,error:error.message});
       }
 }
 
-module.exports = {createEmployee}
+module.exports = {addEmployee}

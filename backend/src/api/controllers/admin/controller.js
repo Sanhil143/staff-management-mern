@@ -1,6 +1,8 @@
 const userModel = require("../../../models/userModel");
-const bcrypt = require('bcrypt');
-const createAdmin = async (req, res) => {
+const organisationModel = require('../../../models/organisationModel');
+const bcrypt = require("bcrypt");
+
+const addAdmin = async (req, res) => {
   try {
     const {
       firstName,
@@ -11,6 +13,7 @@ const createAdmin = async (req, res) => {
       mobile,
       password,
     } = req.body;
+
     if (!firstName) {
       return res
         .status(400)
@@ -31,11 +34,11 @@ const createAdmin = async (req, res) => {
         .status(400)
         .send({ status: false, error: "organisation is required" });
     }
-    const verifyorganisation = await userModel.findOne({ email: email });
-    if (verifyorganisation) {
+    const verifyorganisation = await organisationModel.findOne({ _id: organisationId });
+    if (!verifyorganisation) {
       return res
         .status(400)
-        .send({ status: false, error: "email is already exist" });
+        .send({ status: false, error: "organisation is not exist" });
     }
     if (!email) {
       return res
@@ -64,12 +67,35 @@ const createAdmin = async (req, res) => {
         .status(400)
         .send({ status: false, error: "password is required" });
     }
-    req.body.password = await bcrypt.hash(password,10)
-    req.body.employeeCode = 'ADM' + 1;
-    req.body.role = 'Admin';
+    req.body.password = await bcrypt.hash(password, 10);
+    req.body.role = "Admin";
+
+    const lastEmployee = await userModel
+      .findOne({ organisationId: verifyorganisation._id, role: "Admin" })
+      .sort({ employeeCode: -1 });
+    let nextAdminCode = "";
+    if (lastEmployee) {
+      const lastCode = lastEmployee.employeeCode;
+      const lastNumber = parseInt(lastCode.slice(-3));
+      nextAdminCode = `${verifyorganisation.organisationName}-ADM${(
+        lastNumber + 1
+      )
+        .toString()
+        .padStart(3, "0")}`;
+    } else {
+      nextAdminCode = `${verifyorganisation.organisationName}-ADM001`;
+    }
+    req.body.employeeCode = nextAdminCode;
+    const savedData = await userModel.create(req.body);
+    if(!savedData){
+      return res.status(400).send({status:false,error:'error during admin creation'})
+    }
+    const responseData = { ...savedData.toObject() };
+    delete responseData.password;
+    return res.status(201).send({status:true,message:'admin account created successfully',data:responseData})
   } catch (error) {
     return res.status(500).send({ status: false, error: error.message });
   }
 };
 
-module.exports = { createAdmin };
+module.exports = { addAdmin };
