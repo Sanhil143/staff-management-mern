@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
     required:true
   },
   mobile: {
-    type: Number,
+    type: String,
     unique: true,
     required:true
   },
@@ -47,6 +47,14 @@ const userSchema = new mongoose.Schema({
   },
   address:{
     type:String
+  },
+  isEmailVerified:{
+    type:Boolean,
+    default:false
+  },
+  isMobileVerified:{
+    type:Boolean,
+    default:false
   },
   isDeleted:{
       type:Boolean,

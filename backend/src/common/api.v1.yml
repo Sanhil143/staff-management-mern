@@ -4,6 +4,15 @@ info:
   title: Staff-Management
   description: Staff-attendance-activity
 basePath: /api/v1
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
 paths:
   /spec:
     get:
@@ -12,6 +21,7 @@ paths:
       responses:
         200:
           description: Return the API specification
+
   /organisation/addOrganisation:
     post:
       tags:
@@ -30,7 +40,62 @@ paths:
         - application/json
       consumes:
         - multipart/form-data
-  /auth/login:
+  /organisation/allOrganisations:
+    get:
+      tags:
+        - Organisation
+      summary: add organisation
+      description: >-
+        add new organisation
+      responses:
+        "200":
+      produces:
+        - application/json
+
+  /admin/addAdmin:
+    post:
+      tags:
+        - Admin
+      summary: add admin
+      description: >-
+        add new admin
+      responses:
+        "201":
+      parameters:
+        - required: true
+          name: firstName
+          in: formData
+          type: string
+        - required: true
+          name: lastName
+          in: formData
+          type: string
+        - required: true
+          name: designation
+          in: formData
+          type: string
+        - required: true
+          name: organisationId
+          in: formData
+          type: string
+        - required: true
+          name: email
+          in: formData
+          type: string
+        - required: true
+          name: mobile
+          in: formData
+          type: string
+        - required: true
+          name: password
+          in: formData
+          type: string
+      produces:
+        - application/json
+      consumes:
+        - multipart/form-data
+
+  /auth/userSignin:
     post:
       tags:
         - Authorization
@@ -47,8 +112,12 @@ paths:
           schema:
             type: object
       parameters:
-        - required: true
+        - required: false
           name: email
+          in: formData
+          type: string
+        - required: false
+          name: mobile
           in: formData
           type: string
         - required: true
@@ -95,3 +164,12 @@ paths:
         - application/json
       consumes:
         - multipart/form-data
+
+
+securityDefinitions:
+  basicAuth:
+    type: basic
+  bearerAuth:
+    type: apiKey
+    name: Authorization
+    in: header
