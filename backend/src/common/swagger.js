@@ -1,6 +1,5 @@
 const middleware = require("swagger-express-middleware");
 const path = require("path");
-const {adminMiddle} = require('../api/middlewares/jwtMiddleware')
 const errorHandler = require("../api/middlewares/errorHandler");
 
 const swagger = (app, routes) => {
@@ -35,11 +34,9 @@ const swagger = (app, routes) => {
           },
         })
       );
-      // app.use(mw.CORS(), mw.validateRequest());
 
       routes(app);
-      // app.use(errorHandler);
-      // app.use(adminMiddle);
+      app.use(errorHandler);
       return resolve();
     });
   });
