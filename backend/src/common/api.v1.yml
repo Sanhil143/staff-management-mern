@@ -207,6 +207,27 @@ paths:
       consumes:
         - multipart/form-data
 
+  /attendence/punchIn/{userId}:
+    patch:
+      summary: mark attendence
+      tags:
+        - Attendence
+      parameters:
+        - in: path
+          name: userId
+          type: string
+          required: true
+          description: The id to mark attendence
+        - in: formData
+          name: image
+          type: file
+          required: false
+          description: Images to be uploaded
+      responses:
+        "200":
+          description: OK
+      consumes:
+       - multipart/form-data
 securityDefinitions:
   basicAuth:
     type: basic

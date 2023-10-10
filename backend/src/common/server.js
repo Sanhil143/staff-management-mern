@@ -27,7 +27,6 @@ const setupExpressServer = () => {
   app.use(cookieParser(process.env.SESSION_SECRET));
   app.use(express.static(`${root}/public`));
   app.use(cors())
-  // app.use(adminMiddle);
 
   return app;
 };
