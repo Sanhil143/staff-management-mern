@@ -20,16 +20,16 @@ const addOrganisation = async (req, res) => {
       .findOne({ isDelete:false })
       .sort({ organisationCode: -1 });
     let nextOrganisationCode = "";
-    if (lastEmployee) {
+    if (lastOrganisation) {
       const lastCode = lastOrganisation.organisationCode;
       const lastNumber = parseInt(lastCode.slice(-3));
-      nextOrganisationCode = `${verifyorganisation.organisationName}-${(
+      nextOrganisationCode = `${organisationName}-${(
         lastNumber + 1
       )
         .toString()
         .padStart(3, "0")}`;
     } else {
-      nextOrganisationCode = `${verifyorganisation.organisationName}-ADM001`;
+      nextOrganisationCode = `${organisationName}-ADM001`;
     }
     req.body.organisationCode = nextOrganisationCode;
 
