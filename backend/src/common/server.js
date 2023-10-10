@@ -4,10 +4,11 @@ const path = require("path");
 const os = require('os');
 const bodyParser = require("body-parser");
 const http = require("http");
-const cors = require("cors");
+const cors = require('cors')
 const logger = require('../common/logger');
 const swagger = require("../common/swagger");
 const dbConnection = require("./dbConnection");
+const {adminMiddle} = require('../api/middlewares/jwtMiddleware');
 require('colors');
 
 const app = express();
@@ -25,8 +26,8 @@ const setupExpressServer = () => {
   app.use(bodyParser.text({ limit: process.env.REQUEST_LIMIT || "100kb" }));
   app.use(cookieParser(process.env.SESSION_SECRET));
   app.use(express.static(`${root}/public`));
-  app.use(cors());
-  // app.use(jwtTokenAuth);
+  app.use(cors())
+  // app.use(adminMiddle);
 
   return app;
 };

@@ -21,7 +21,7 @@ paths:
       responses:
         200:
           description: Return the API specification
-
+          
   /organisation/addOrganisation:
     post:
       tags:
@@ -165,6 +165,47 @@ paths:
       consumes:
         - multipart/form-data
 
+  /employee/addEmployee:
+    post:
+      tags:
+        - Employee
+      summary: add employee
+      security:
+        - basicAuth: []
+        - bearerAuth: []
+      description: >-
+        add new employee
+      responses:
+        "201":
+      parameters:
+        - required: true
+          name: firstName
+          in: formData
+          type: string
+        - required: true
+          name: lastName
+          in: formData
+          type: string
+        - required: true
+          name: designation
+          in: formData
+          type: string
+        - required: true
+          name: organisationId
+          in: formData
+          type: string
+        - required: true
+          name: email
+          in: formData
+          type: string
+        - required: true
+          name: mobile
+          in: formData
+          type: string
+      produces:
+        - application/json
+      consumes:
+        - multipart/form-data
 
 securityDefinitions:
   basicAuth:
